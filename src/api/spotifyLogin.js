@@ -22,23 +22,26 @@ async function SpotifyLogin() {
     };
 
     var state = generateRandomString(16);
-    var url = 'https://accounts.spotify.com/authorize';
+    var url = REACT_APP_AUTHORIZE_URL;
     url += '?response_type=token';
     url += '&client_id=' + encodeURIComponent(REACT_APP_CLIENT_ID);
     url += '&scope=' + encodeURIComponent(scope);
     url += '&redirect_uri=' + encodeURIComponent(REACT_APP_REDIRECT_URL);
     url += '&state=' + encodeURIComponent(state);
     url += '&show_dialog=true'
+    try{
 
-    let token = await WebBrowserLinking.openAuthSessionAsync(url, REACT_APP_REDIRECT_URL)
+        let token = await WebBrowserLinking.openAuthSessionAsync(url, REACT_APP_REDIRECT_URL)
 
-    let access_token = parseUrl(token.url).hash
+        let access_token = parseUrl(token.url).hash
+    
+        access_token = access_token.match('access_token=.*$')[0].split("&")[0];
+        access_token = access_token.match('access_token=.*$')[0].split("=")[1]
 
-    access_token = access_token.match('access_token=.*$')[0].split("&")[0];
-    access_token = access_token.match('access_token=.*$')[0].split("=")[1]
-
-    console.log(access_token);
-
-    return (access_token)
+        return (access_token)
+    }catch(error){
+        console.log(error);
+    }
+    
 }
 export default SpotifyLogin;
