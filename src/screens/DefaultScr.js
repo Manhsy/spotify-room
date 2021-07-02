@@ -5,7 +5,10 @@ import Title from '../components/Title'
 import * as AuthSession from 'expo-auth-session';
 
 const DefaultScr = ({ navigation }) => {
-    console.log(AuthSession.getRedirectUrl())
+
+    // AuthSession.makeRedirectUri()
+    console.log(AuthSession.makeRedirectUri())
+    // console.log(AuthSession.getRedirectUrl())
     return (
         <>
 

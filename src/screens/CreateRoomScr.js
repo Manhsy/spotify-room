@@ -1,9 +1,13 @@
-import React from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Linking } from 'react-native';
 import Title from '../components/Title'
 // import authHandler from '../utils/authenticationHandler';
 import CustButton from '../components/CustButton';
+import SpotifyLogin from '../api/spotifyLogin'
+import * as AuthSession from 'expo-auth-session';
+
 const CreateRoomScr = ({ navigation }) => {
+
     return (
         <>
             <Title />
@@ -15,8 +19,9 @@ const CreateRoomScr = ({ navigation }) => {
             <View style={{ top: "26%" }}>
                 <CustButton
                     title="Log into Spotify"
-                // onSub={authHandler.onLogin}
+                    onSub={SpotifyLogin}
                 />
+
             </View>
             <TouchableOpacity onPress={() => { navigation.navigate('Join') }}>
                 <Text style={styles.joinButton}>Join a Room</Text>
