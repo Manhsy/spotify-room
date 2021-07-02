@@ -18,6 +18,7 @@ const DefaultScr = ({ navigation }) => {
                     title="Create Room"
                     onSub={() => { navigation.navigate('Create') }}
                     disable={false}
+                    buttonColor="#E5DCF3"
                 />
 
                 <View style={{ marginTop: 25 }}>
@@ -25,6 +26,7 @@ const DefaultScr = ({ navigation }) => {
                         title="Join Room"
                         onSub={() => { navigation.navigate('Join') }}
                         disable={false}
+                        buttonColor="#D3E5F2"
                     />
                 </View>
             </View>
