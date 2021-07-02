@@ -5,27 +5,34 @@ import Title from '../components/Title'
 import CustButton from '../components/CustButton';
 import SpotifyLogin from '../api/spotifyLogin'
 import * as AuthSession from 'expo-auth-session';
-
+var token = '../api/RDirect'
 const CreateRoomScr = ({ navigation }) => {
-
+    const [roomName, setRoomName] = useState("");
     return (
         <>
             <Title />
-            <TextInput style={styles.input}
+            <TextInput 
+                style={styles.input}
                 placeholder="Enter Room Name"
                 maxLength={100}
                 multiline={false}
+                value={roomName}
+                onChangeText={setRoomName}
             />
+            
             <View style={{ top: "26%" }}>
                 <CustButton
                     title="Log into Spotify"
                     onSub={SpotifyLogin}
+                    disable={roomName.length===0 ? true : false}
                 />
 
             </View>
             <TouchableOpacity onPress={() => { navigation.navigate('Join') }}>
                 <Text style={styles.joinButton}>Join a Room</Text>
             </TouchableOpacity>
+
+            {token ? null : <Text>{token.access_token}</Text>}
         </>
     )
 }

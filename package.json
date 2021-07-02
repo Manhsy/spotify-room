@@ -16,7 +16,11 @@
     "expo-linking": "~2.3.1",
     "expo-random": "~11.2.0",
     "expo-status-bar": "~1.0.4",
+    "expo-web-browser": "~9.2.0",
+    "parse-url": "^5.0.7",
+    "query-string": "^7.0.1",
     "react": "16.13.1",
+    "react-bootstrap": "^1.6.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
     "react-native-app-auth": "^6.4.0",
@@ -30,7 +34,8 @@
     "react-navigation": "^4.4.4",
     "react-navigation-stack": "^2.10.4",
     "react-navigation-tabs": "^2.11.1",
-    "spotify-web-api-js": "^1.5.1"
+    "spotify-web-api-js": "^1.5.1",
+    "url": "^0.11.0"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0"

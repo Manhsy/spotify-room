@@ -1,15 +1,37 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-const CustButton = ({ title, onSub }) => {
-    return (
-        <TouchableOpacity style={styles.button} onPress={() => { onSub() }}>
-            <Text style={styles.text}>{title}</Text>
-        </TouchableOpacity>
+const CustButton = ({ title, onSub, disable }) => {
+    const displayError = ()=>{
+        return (
+            <Text style = {styles.error}> Enter room name before proceeding</Text>
+        )
+    }
+    const [error, setError] = useState("");
+    return (<>
+            {error.length>0? <Text style = {styles.error}> Enter room name before proceeding</Text>: null}
+            <TouchableOpacity 
+                style={styles.button} 
+                onPress={() =>{
+                    if(disable)setError("Enter room name before proceeding")
+                    return (
+                        disable? null: onSub()
+                    )
+                }}
+                // disabled={disable}
+            >
+                <Text style={styles.text}>{title}</Text>
+            </TouchableOpacity>
+        </>
     )
 }
 
 const styles = StyleSheet.create({
+    error: {
+        paddingVertical: 10,
+        alignSelf: 'center',
+        color: 'red',
+    },
     button: {
         width: 234,
         height: 55,

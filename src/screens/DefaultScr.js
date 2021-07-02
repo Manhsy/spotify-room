@@ -16,14 +16,15 @@ const DefaultScr = ({ navigation }) => {
             <View style={styles.container}>
                 <CustButton
                     title="Create Room"
-                    color="#E5DCF3"
                     onSub={() => { navigation.navigate('Create') }}
+                    disable={false}
                 />
 
                 <View style={{ marginTop: 25 }}>
                     <CustButton
                         title="Join Room"
                         onSub={() => { navigation.navigate('Join') }}
+                        disable={false}
                     />
                 </View>
             </View>
