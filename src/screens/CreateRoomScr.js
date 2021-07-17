@@ -1,71 +1,103 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
-import Title from '../components/Title'
-import CustButton from '../components/CustButton';
-import SpotifyLogin from '../api/spotifyLogin'
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
+import Title from "../components/Title";
+import CustButton from "../components/CustButton";
+import SpotifyLogin from "../api/spotifyLogin";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const CreateRoomScr = ({ navigation }) => {
-    const [roomName, setRoomName] = useState("");
+const CreateRoomScr = (props) => {
+  const [roomName, setRoomName] = useState("");
+  const [error, setError] = useState("");
 
-    const displayError = ()=>{
-        return (
-            <Text style = {styles.error}> Enter room name before proceeding</Text>
-        )
+  const login = async () => {
+    try {
+      const response = await SpotifyLogin();
+      await AsyncStorage.setItem("SpotifyAuth", response);
+
+      props.navigation.navigate("PlayList", { roomName });
+    } catch (err) {
+      console.log(err);
     }
-    return (
-        <>
-            <Title />
-            <TextInput 
-                style={styles.input}
-                placeholder="Enter Room Name"
-                maxLength={100}
-                multiline={false}
-                value={roomName}
-                onChangeText={setRoomName}
-            />
+  };
 
-            {roomName.length>0? null: displayError()}
-             
-            <View style={{ top: "26%" }}>
-                <CustButton
-                    title="Log into Spotify"
-                    onSub={SpotifyLogin}
-                    disable={roomName.length===0 ? true : false}
-                    buttonColor="#1BD760"
-                />
-            </View>
-            <TouchableOpacity onPress={() => { navigation.navigate('Join') }}>
-                <Text style={styles.joinButton}>Join a Room</Text>
-            </TouchableOpacity>
+  const checkError = () => {
+    if (roomName.length === 0) {
+      setError("Fill out all needed fields");
+    } else {
+      login();
+    }
+  };
+  return (
+    <View style={styles.container}>
+      <Title first={"Spotify"} last={"Room"} />
 
-        </>
-    )
-}
+      <View style={styles.subContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Room Name"
+          maxLength={100}
+          multiline={false}
+          value={roomName}
+          onChangeText={(text) => {
+            setRoomName(text);
+          }}
+        />
+
+        <View style={{ top: "10%" }}>
+          {error.length > 0 ? <Text style={styles.error}>{error}</Text> : null}
+          <CustButton
+            title="Log into Spotify"
+            onSub={checkError}
+            buttonColor="#1BD760"
+          />
+
+          <TouchableOpacity
+            onPress={() => {
+              props.navigation.navigate("Join");
+            }}
+          >
+            <Text style={styles.joinButton}>Join a Room</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-    error: {
-        top: '25.5%',
-        paddingVertical: 2,
-        alignSelf: 'center',
-        color: 'red',
-    },
-    input: {
-        width: "98%",
-        backgroundColor: "white",
-        height: 50,
-        top: "25%",
-        borderRadius: 5,
-        paddingLeft: 16,
-        textAlign: "left",
-        fontSize: 21,
-        left: 4,
-    },
-    joinButton: {
-        top: "1150%",
-        alignSelf: "center",
-        color: "blue",
-        fontSize: 18,
-    }
-})
+  error: {
+    alignSelf: "center",
+    color: "red",
+    marginBottom: 5,
+  },
+  input: {
+    width: "98%",
+    backgroundColor: "white",
+    height: 50,
+    borderRadius: 5,
+    paddingLeft: 16,
+    textAlign: "left",
+    fontSize: 21,
+    left: 4,
+  },
+  joinButton: {
+    alignSelf: "center",
+    color: "blue",
+    fontSize: 18,
+    marginTop: 20,
+  },
+  container: {
+    top: "15%",
+  },
+  subContainer: {
+    top: "30%",
+  },
+});
 
 export default CreateRoomScr;
