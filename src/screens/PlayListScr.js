@@ -1,8 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, ScrollView, SafeAreaView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  SafeAreaView,
+  ImageBackground,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import SingleTrackCard from "../components/SingleTrackCard";
+import { TransitionPresets } from "react-navigation-stack";
 
 const PlayScr = (props) => {
   const roomName = props.navigation.state.params.roomName;
@@ -39,16 +47,24 @@ const PlayScr = (props) => {
   }, []);
   // console.log(props.navigation);
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <View style={{ marginVertical: 30, justifyContent: "center" }}>
-          <Text style={styles.title}>{roomName}</Text>
-        </View>
-        <View>
-          <SingleTrackCard playList={playList} navigation={props.navigation} />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <ImageBackground
+      style={{ width: "100%", height: "100%", flex: 1 }}
+      source={require("../backgroundImage/CRkXWm.jpeg")}
+    >
+      <SafeAreaView style={styles.container}>
+        <ScrollView>
+          <View style={{ marginVertical: 30, justifyContent: "center" }}>
+            <Text style={styles.title}>{roomName}</Text>
+          </View>
+          <View>
+            <SingleTrackCard
+              playList={playList}
+              navigation={props.navigation}
+            />
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </ImageBackground>
   );
 };
 

@@ -16,10 +16,15 @@ const navigator = createSwitchNavigator(
       Join: JoinARoomScr,
     }),
 
-    AuthenticatedFlow: createStackNavigator({
-      PlayList: PlayList,
-      ListSong: ListSong,
-    }),
+    AuthenticatedFlow: createStackNavigator(
+      {
+        PlayList: PlayList,
+        ListSong: ListSong,
+      },
+      {
+        headerMode: "none",
+      }
+    ),
   },
   {
     initialRouteName: "Home",
@@ -31,7 +36,7 @@ const App = createAppContainer(navigator);
 const app = () => {
   return (
     <ImageBackground
-      style={{ width: "100%", height: "100%" }}
+      style={{ width: "100%", height: "100%", flex: 1 }}
       source={require("./src/backgroundImage/CRkXWm.jpeg")}
     >
       <App />

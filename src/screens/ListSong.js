@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ImageBackground } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
@@ -10,12 +10,6 @@ const ListSong = (props) => {
   useEffect(() => {
     const getSongs = async () => {
       const auth = await AsyncStorage.getItem("SpotifyAuth");
-      const markets = await axios.get("https://api.spotify.com/v1/markets", {
-        headers: { Authorization: `Bearer ${auth}` },
-      });
-
-      //markets.data
-
       const songs = await axios.get(
         `https://api.spotify.com/v1/playlists/${playListId}/tracks?market=${"US"}`,
         {
@@ -31,11 +25,18 @@ const ListSong = (props) => {
       setSongs();
     };
   }, []);
+
   return (
-    <View>
-      <Text>ListSong</Text>
-    </View>
+    <ImageBackground
+      style={{ width: "100%", height: "100%", flex: 1 }}
+      source={require("../backgroundImage/CRkXWm.jpeg")}
+    >
+      <View>
+        <Text>ListSong</Text>
+      </View>
+    </ImageBackground>
   );
 };
+
 const styles = StyleSheet.create({});
 export default ListSong;
