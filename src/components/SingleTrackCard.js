@@ -1,15 +1,47 @@
-import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  ScrollView,
+  SafeAreaView,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  FlatList,
+  View,
+  Dimensions,
+} from "react-native";
+import Track from "./Track";
 
+const { height, width } = Dimensions.get("window");
 const SingleTrackCard = (props) => {
-  //   console.log(props);
+  const [playList, setPlayList] = useState([]);
+
+  useEffect(() => {
+    setPlayList(props.items);
+    return () => {
+      setPlayList();
+    };
+  }, []);
+
   return (
-    <View>
-      <Text></Text>
-    </View>
+    <SafeAreaView>
+      <ScrollView>
+        <FlatList
+          data={playList}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => <Track {...item} />}
+        />
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 0,
+  },
+  button: {
+    flexDirection: "row",
+  },
+});
 
 export default SingleTrackCard;
