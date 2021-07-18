@@ -5,12 +5,13 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
+  Image,
 } from "react-native";
-import { Avatar } from "react-native-elements";
+import Icon from "react-native-vector-icons/AntDesign";
 
 const { width, height } = Dimensions.get("window");
 const Track = (props) => {
-  const [name, setName] = useState();
+  const [name, setName] = useState("");
   const [image, setImage] = useState();
   const [total, setTotal] = useState();
 
@@ -25,20 +26,31 @@ const Track = (props) => {
       setTotal();
     };
   });
+
+  const filler = (num) => {
+    let spaces = "";
+    for (let i = num; i <= 40; i++) {
+      spaces += " ";
+    }
+    return spaces;
+  };
   return (
     <View style={styles.container}>
-      <TouchableOpacity>
-        <View style={styles.button}>
-          <Avatar
-            size="medium"
-            source={{
-              uri: image,
-            }}
-          />
-          <View>
-            <Text numOfLines={1} style={styles.name}>
-              {name}
-            </Text>
+      <TouchableOpacity style={styles.border}>
+        <View style={styles.subBorder}>
+          <Image style={styles.image} source={{ uri: image }} />
+          <View style={styles.textView}>
+            <View style={{ flexDirection: "column" }}>
+              <Text numOfLines={1} style={styles.name}>
+                {name.length > 30 ? name.slice(0, 30) + "..." : name}
+              </Text>
+              <Text numOfLines={1} style={styles.sub}>
+                {total} Tracks
+              </Text>
+            </View>
+          </View>
+          <View style={styles.icon}>
+            <Icon name="right" size={17} />
           </View>
         </View>
       </TouchableOpacity>
@@ -47,22 +59,47 @@ const Track = (props) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginLeft: 15,
-    margin: 10,
+  image: {
+    width: 50,
+    height: 50,
+    borderRadius: 7,
   },
-  button: {
+  icon: {
+    alignContent: "flex-end",
+    position: "absolute",
+
+    right: 0,
+  },
+  subBorder: {
     flexDirection: "row",
+    alignItems: "center",
+    marginLeft: 6,
+    width: width - 50,
+  },
+  border: {
+    margin: 9,
+    marginHorizontal: 20,
+    justifyContent: "flex-start",
+    height: 65,
+    flexDirection: "row",
+    borderRadius: 7,
+    backgroundColor: "white",
+    flex: 1,
+    alignItems: "stretch",
+  },
+  textView: {
+    justifyContent: "center",
+    marginHorizontal: 10,
   },
   name: {
-    marginLeft: 13,
-    marginTop: 12,
-    marginRight: 45,
     fontSize: 18,
-    color: "#f8f8ff",
     fontWeight: "400",
   },
-  sub: {},
+  sub: {
+    fontSize: 11,
+    fontWeight: "200",
+    fontStyle: "italic",
+  },
 });
 
 export default Track;

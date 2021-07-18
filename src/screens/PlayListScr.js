@@ -40,11 +40,13 @@ const PlayScr = (props) => {
   }, []);
 
   return (
-    <SafeAreaView>
-      <ScrollView style={styles.container}>
-        <Title first={roomName} />
-        <View style={styles.subContainer}>
-          <SingleTrackCard {...playList} />
+    <SafeAreaView style={styles.container}>
+      <ScrollView>
+        <View style={{ marginVertical: 30, justifyContent: "center" }}>
+          <Text style={styles.title}>{roomName}</Text>
+        </View>
+        <View>
+          <SingleTrackCard playList={playList} />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -52,12 +54,14 @@ const PlayScr = (props) => {
 };
 
 const styles = StyleSheet.create({
-  center: {},
-  subContainer: {
-    marginTop: 111,
-  },
   container: {
-    marginTop: -10,
+    flex: 1,
+  },
+  title: {
+    alignSelf: "center",
+    fontSize: 55,
+    fontWeight: "400",
+    fontStyle: "italic",
   },
 });
 export default PlayScr;

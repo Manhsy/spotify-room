@@ -12,21 +12,12 @@ import {
 import Track from "./Track";
 
 const { height, width } = Dimensions.get("window");
-const SingleTrackCard = (props) => {
-  const [playList, setPlayList] = useState([]);
-
-  useEffect(() => {
-    setPlayList(props.items);
-    return () => {
-      setPlayList();
-    };
-  }, []);
-
+const SingleTrackCard = ({ playList }) => {
   return (
     <SafeAreaView>
       <ScrollView>
         <FlatList
-          data={playList}
+          data={playList.items}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => <Track {...item} />}
         />

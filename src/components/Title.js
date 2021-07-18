@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
-const Title = ({ first, last }) => {
+const Title = ({ first, last, marginTop }) => {
   return (
     <>
       <Text style={styles.spotify}>{first}</Text>
