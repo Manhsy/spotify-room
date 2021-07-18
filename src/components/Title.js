@@ -1,27 +1,37 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { useFonts, Signika_400Regular } from "@expo-google-fonts/signika";
+import AppLoading from "expo-app-loading";
 
 const Title = ({ first, last, marginTop }) => {
-  return (
-    <>
-      <Text style={styles.spotify}>{first}</Text>
-      <Text style={styles.room}>{last}</Text>
-    </>
-  );
+  let [fontsLoaded] = useFonts({
+    Signika_400Regular,
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
+    return (
+      <>
+        <Text style={styles.spotify}>──{first}──</Text>
+        <Text style={styles.room}>──{last}──</Text>
+      </>
+    );
+  }
 };
 const styles = StyleSheet.create({
   spotify: {
-    top: "10%",
-    fontStyle: "italic",
-    fontWeight: "bold",
     textAlign: "center",
+    fontWeight: "bold",
+    paddingHorizontal: 5,
     fontSize: 55,
+    fontFamily: "Signika_400Regular",
   },
   room: {
-    top: "12%",
-    fontWeight: "bold",
+    fontWeight: "500",
     textAlign: "center",
     fontSize: 55,
+    fontFamily: "Signika_400Regular",
   },
 });
 

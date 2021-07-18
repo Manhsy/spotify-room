@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, ScrollView, SafeAreaView } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Title from "../components/Title";
 import axios from "axios";
 import SingleTrackCard from "../components/SingleTrackCard";
 
@@ -38,7 +37,7 @@ const PlayScr = (props) => {
     };
     validate();
   }, []);
-
+  // console.log(props.navigation);
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -46,7 +45,7 @@ const PlayScr = (props) => {
           <Text style={styles.title}>{roomName}</Text>
         </View>
         <View>
-          <SingleTrackCard playList={playList} />
+          <SingleTrackCard playList={playList} navigation={props.navigation} />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -60,8 +59,6 @@ const styles = StyleSheet.create({
   title: {
     alignSelf: "center",
     fontSize: 55,
-    fontWeight: "400",
-    fontStyle: "italic",
   },
 });
 export default PlayScr;

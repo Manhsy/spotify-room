@@ -12,14 +12,14 @@ import {
 import Track from "./Track";
 
 const { height, width } = Dimensions.get("window");
-const SingleTrackCard = ({ playList }) => {
+const SingleTrackCard = ({ playList, navigation }) => {
   return (
     <SafeAreaView>
       <ScrollView>
         <FlatList
           data={playList.items}
           keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <Track {...item} />}
+          renderItem={({ item }) => <Track {...item} navigation={navigation} />}
         />
       </ScrollView>
     </SafeAreaView>

@@ -15,10 +15,13 @@ const Track = (props) => {
   const [image, setImage] = useState();
   const [total, setTotal] = useState();
 
+  const [playListId, setPlaylistId] = useState();
+
   useEffect(() => {
     setName(props.name);
     setImage(props.images[0].url);
     setTotal(props.tracks.total);
+    setPlaylistId(props.id);
 
     return () => {
       setName();
@@ -36,7 +39,12 @@ const Track = (props) => {
   };
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.border}>
+      <TouchableOpacity
+        style={styles.border}
+        onPress={() => {
+          props.navigation.navigate("ListSong", { playListId });
+        }}
+      >
         <View style={styles.subBorder}>
           <Image style={styles.image} source={{ uri: image }} />
           <View style={styles.textView}>
@@ -50,7 +58,7 @@ const Track = (props) => {
             </View>
           </View>
           <View style={styles.icon}>
-            <Icon name="right" size={17} />
+            <Icon name="right" size={17} color={"red"} />
           </View>
         </View>
       </TouchableOpacity>
@@ -62,12 +70,11 @@ const styles = StyleSheet.create({
   image: {
     width: 50,
     height: 50,
-    borderRadius: 7,
+    borderRadius: 10,
   },
   icon: {
     alignContent: "flex-end",
     position: "absolute",
-
     right: 0,
   },
   subBorder: {
@@ -82,13 +89,14 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     height: 65,
     flexDirection: "row",
-    borderRadius: 7,
+    borderRadius: 10,
     backgroundColor: "white",
     flex: 1,
-    alignItems: "stretch",
+    shadowOpacity: 0.4,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 4 },
   },
   textView: {
-    justifyContent: "center",
     marginHorizontal: 10,
   },
   name: {
