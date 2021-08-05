@@ -24,7 +24,7 @@ const ListSong = (props) => {
 
     const getSongs = async () => {
       try {
-        await setPlaylistId(props.navigation.state.params.playListId);
+        setPlaylistId(props.navigation.state.params.playListId);
         const auth = await AsyncStorage.getItem("SpotifyAuth");
         const songs = await axios.get(
           `https://api.spotify.com/v1/playlists/${playlistID}/tracks?market=${"US"}`,
