@@ -1,18 +1,8 @@
 import React, { useState, useEffect } from "react";
-import {
-  ScrollView,
-  SafeAreaView,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  FlatList,
-  View,
-  Dimensions,
-} from "react-native";
+import { ScrollView, SafeAreaView, StyleSheet, FlatList } from "react-native";
 import Track from "./Track";
 
-const { height, width } = Dimensions.get("window");
-const SingleTrackCard = ({ playList, navigation }) => {
+const AlbumCard = ({ playList, navigation }) => {
   return (
     <SafeAreaView>
       <ScrollView>
@@ -35,4 +25,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SingleTrackCard;
+export default AlbumCard;

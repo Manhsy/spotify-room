@@ -9,18 +9,13 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import SingleTrackCard from "../components/SingleTrackCard";
-import { TransitionPresets } from "react-navigation-stack";
+import AlbumCard from "../components/AlbumCard";
 
 const PlayScr = (props) => {
   const roomName = props.navigation.state.params.roomName;
   const [auth, setAuth] = useState();
   const [user, setUser] = useState();
   const [playList, setPlayList] = useState([]);
-  const [playListNames, setPlayListNames] = useState();
-  const [playListId, setPlaylistId] = useState();
-  const [chosenPlaylist, setChosenPlaylist] = useState();
-  const [coverAlb, setCoverAlb] = useState();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -45,7 +40,6 @@ const PlayScr = (props) => {
     };
     validate();
   }, []);
-  // console.log(props.navigation);
   return (
     <ImageBackground
       style={{ width: "100%", height: "100%", flex: 1 }}
@@ -57,10 +51,7 @@ const PlayScr = (props) => {
             <Text style={styles.title}>{roomName}</Text>
           </View>
           <View>
-            <SingleTrackCard
-              playList={playList}
-              navigation={props.navigation}
-            />
+            <AlbumCard playList={playList} navigation={props.navigation} />
           </View>
         </ScrollView>
       </SafeAreaView>

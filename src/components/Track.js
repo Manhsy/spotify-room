@@ -30,19 +30,12 @@ const Track = (props) => {
     };
   });
 
-  const filler = (num) => {
-    let spaces = "";
-    for (let i = num; i <= 40; i++) {
-      spaces += " ";
-    }
-    return spaces;
-  };
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.border}
         onPress={() => {
-          props.navigation.navigate("ListSong", { playListId });
+          props.navigation.navigate("ListSong", { playListId, image, name });
         }}
       >
         <View style={styles.subBorder}>
