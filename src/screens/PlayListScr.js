@@ -10,6 +10,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import AlbumCard from "../components/AlbumCard";
+import BottomTab from "../components/BottomTab";
 
 const PlayScr = (props) => {
   const roomName = props.navigation.state.params.roomName;
@@ -55,11 +56,18 @@ const PlayScr = (props) => {
           </View>
         </ScrollView>
       </SafeAreaView>
+
+      <View style={styles.bottomTab}>
+        <BottomTab />
+      </View>
     </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+  bottomTab: {
+    marginBottom: 35,
+  },
   container: {
     flex: 1,
   },

@@ -7,7 +7,6 @@ import CreateRoomScr from "./src/screens/CreateRoomScr";
 import JoinARoomScr from "./src/screens/JoinARoomScr";
 import PlayList from "./src/screens/PlayListScr";
 import ListSong from "./src/screens/ListSong";
-import CurPlayScr from "./src/screens/CurPlayScr";
 
 const navigator = createSwitchNavigator(
   {
@@ -21,7 +20,6 @@ const navigator = createSwitchNavigator(
       {
         PlayList: PlayList,
         ListSong: ListSong,
-        Play: CurPlayScr,
       },
       {
         headerMode: "none",

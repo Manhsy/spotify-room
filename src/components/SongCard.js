@@ -4,23 +4,19 @@ import Song from "./Song";
 
 const SingleTrackCard = ({ songs, navigation }) => {
   return (
-    <SafeAreaView>
-      <ScrollView>
-        <FlatList
-          data={songs}
-          keyExtractor={(item) =>
-            item.track.id + (Math.random() + 1).toString(36).substring(7)
-          }
-          renderItem={({ item }) => (
-            <Song
-              songs={item}
-              index={songs.indexOf(item)}
-              navigation={navigation}
-            />
-          )}
+    <FlatList
+      data={songs}
+      keyExtractor={(item) =>
+        item.track.id + (Math.random() + 1).toString(36).substring(7)
+      }
+      renderItem={({ item }) => (
+        <Song
+          songs={item}
+          index={songs.indexOf(item)}
+          navigation={navigation}
         />
-      </ScrollView>
-    </SafeAreaView>
+      )}
+    />
   );
 };
 

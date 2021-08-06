@@ -59,17 +59,17 @@ const ListSong = (props) => {
             <View style={styles.shadow}>
               <Image style={styles.image} source={{ uri: albumCover }} />
             </View>
-            <View style={{ paddingHorizontal: 50 }}>
-              <TextTicker
-                style={styles.albumTitle}
-                duration={9000}
-                scroll={false}
-                animationType="auto"
-                bounce={false}
-              >
-                {albumName}
-              </TextTicker>
-            </View>
+
+            <TextTicker
+              style={styles.albumTitle}
+              duration={9000}
+              scroll={false}
+              animationType="auto"
+              bounce={false}
+            >
+              {albumName}
+            </TextTicker>
+
             <SongCard songs={songs} navigation={props.navigation} />
           </View>
         </ScrollView>
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 25,
     color: "white",
-    marginBottom: 20,
+    position: "relative",
   },
   image: {
     marginBottom: 11,

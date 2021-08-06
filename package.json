@@ -51,6 +51,8 @@
     "react-navigation-tabs": "^2.11.1",
     "react-redux": "^7.2.4",
     "redux": "^4.1.0",
+    "rn-sliding-up-panel": "^2.4.5",
+    "rn-swipeable-panel": "^1.2.5",
     "spotify-web-api-js": "^1.5.1",
     "url": "^0.11.0"
   },

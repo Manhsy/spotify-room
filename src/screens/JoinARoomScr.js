@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  ImageBackground,
 } from "react-native";
 import CustButton from "../components/CustButton";
 import Title from "../components/Title";
@@ -23,33 +24,40 @@ const JoinARoomScr = ({ navigation }) => {
     }
   };
   return (
-    <View style={styles.container}>
-      <Title first={"Spotify"} last={"Room"} />
-      <View style={styles.subContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Room Code"
-          maxLength={100}
-          multiline={false}
-          onTextChange={(text) => {
-            setRoomCode(text);
-            setError("");
-          }}
-        />
-
-        <View style={{ top: "10%" }}>
-          {error.length > 0 ? <Text style={styles.error}> {error}</Text> : null}
-          <CustButton title="Join" onSub={checkError} buttonColor="#1BD760" />
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("Create");
+    <ImageBackground
+      style={{ width: "100%", height: "100%", flex: 1 }}
+      source={require("../backgroundImage/CRkXWm.jpeg")}
+    >
+      <View style={styles.container}>
+        <Title first={"Spotify"} last={"Room"} />
+        <View style={styles.subContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Room Code"
+            maxLength={100}
+            multiline={false}
+            onTextChange={(text) => {
+              setRoomCode(text);
+              setError("");
             }}
-          >
-            <Text style={styles.createButton}>Create a room</Text>
-          </TouchableOpacity>
+          />
+
+          <View style={{ top: "10%" }}>
+            {error.length > 0 ? (
+              <Text style={styles.error}> {error}</Text>
+            ) : null}
+            <CustButton title="Join" onSub={checkError} buttonColor="#1BD760" />
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("Create");
+              }}
+            >
+              <Text style={styles.createButton}>Create a room</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-    </View>
+    </ImageBackground>
   );
 };
 

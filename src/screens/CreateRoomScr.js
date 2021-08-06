@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  ImageBackground,
 } from "react-native";
 import Title from "../components/Title";
 import CustButton from "../components/CustButton";
@@ -34,39 +35,46 @@ const CreateRoomScr = (props) => {
     }
   };
   return (
-    <View style={styles.container}>
-      <Title first={"Spotify"} last={"Room"} />
+    <ImageBackground
+      style={{ width: "100%", height: "100%", flex: 1 }}
+      source={require("../backgroundImage/CRkXWm.jpeg")}
+    >
+      <View style={styles.container}>
+        <Title first={"Spotify"} last={"Room"} />
 
-      <View style={styles.subContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Room Name"
-          maxLength={100}
-          multiline={false}
-          value={roomName}
-          onChangeText={(text) => {
-            setRoomName(text);
-          }}
-        />
-
-        <View style={{ top: "10%" }}>
-          {error.length > 0 ? <Text style={styles.error}>{error}</Text> : null}
-          <CustButton
-            title="Log into Spotify"
-            onSub={checkError}
-            buttonColor="#1BD760"
+        <View style={styles.subContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Room Name"
+            maxLength={100}
+            multiline={false}
+            value={roomName}
+            onChangeText={(text) => {
+              setRoomName(text);
+            }}
           />
 
-          <TouchableOpacity
-            onPress={() => {
-              props.navigation.navigate("Join");
-            }}
-          >
-            <Text style={styles.joinButton}>Join a Room</Text>
-          </TouchableOpacity>
+          <View style={{ top: "10%" }}>
+            {error.length > 0 ? (
+              <Text style={styles.error}>{error}</Text>
+            ) : null}
+            <CustButton
+              title="Log into Spotify"
+              onSub={checkError}
+              buttonColor="#1BD760"
+            />
+
+            <TouchableOpacity
+              onPress={() => {
+                props.navigation.navigate("Join");
+              }}
+            >
+              <Text style={styles.joinButton}>Join a Room</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-    </View>
+    </ImageBackground>
   );
 };
 

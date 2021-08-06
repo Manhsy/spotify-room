@@ -10,7 +10,7 @@ async function SpotifyLogin() {
   const REACT_APP_REDIRECT_URL = "exp://192.168.0.11:19000";
 
   var scope =
-    "playlist-read-private user-read-private user-read-email user-read-playback-state user-top-read playlist-read-private playlist-read-collaborative";
+    "user-modify-playback-state playlist-read-private user-read-private user-read-email user-read-playback-state user-top-read playlist-read-private playlist-read-collaborative";
   const generateRandomString = function (length) {
     var text = "";
     var possible =
