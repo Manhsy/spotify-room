@@ -7,8 +7,10 @@ import {
   Dimensions,
   Image,
 } from "react-native";
+import { Divider } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import Feather from "react-native-vector-icons/Feather";
 import { SwipeablePanel } from "rn-swipeable-panel";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
@@ -18,7 +20,11 @@ const BottomTab = () => {
   const [panelProps, setPanelProps] = useState({
     fullWidth: true,
     openLarge: true,
-    style: { backgroundColor: "#121212" },
+    style: {
+      backgroundColor: "#121212",
+      paddingBottom: 0,
+      flex: 1,
+    },
     closeOnTouchOutside: true,
     onClose: () => closePanel(),
     onPressCloseButton: () => closePanel(),
@@ -104,11 +110,25 @@ const BottomTab = () => {
       </TouchableOpacity>
 
       <SwipeablePanel {...panelProps} isActive={isPanelActive}>
-        <View style={styles.pannelTextContainer}>
+        <View style={styles.panelContainer}>
           <Image style={styles.largeImage} source={{ uri: image }} />
-          <View style={{ marginTop: 40 }}>
-            <Text style={styles.pannelSong}>{curSongPlaying}</Text>
-            <Text style={styles.pannelArtist}>
+          <View style={{ marginTop: 40, alignItems: "center" }}>
+            <TextTicker
+              style={styles.pannelSong}
+              duration={10000}
+              scroll={false}
+              animationType="auto"
+              bounce={false}
+            >
+              {curSongPlaying}
+            </TextTicker>
+            <TextTicker
+              style={styles.pannelArtist}
+              duration={10000}
+              scroll={false}
+              animationType="auto"
+              bounce={false}
+            >
               {artists.map((name, index) => {
                 if (index + 1 !== artists.length) {
                   return name + ", ";
@@ -116,7 +136,28 @@ const BottomTab = () => {
                   return name;
                 }
               })}
-            </Text>
+            </TextTicker>
+          </View>
+          <View style={{ width: width - 80 }}>
+            <Divider
+              width={5}
+              color="white"
+              length={width / 2}
+              orientation="horizontal"
+              style={styles.audioBar}
+            />
+          </View>
+          <View style={styles.controller}>
+            <TouchableOpacity>
+              <Icon name="skip-previous" color="white" size={65} />
+            </TouchableOpacity>
+
+            <TouchableOpacity>
+              <Feather name="pause-circle" color="white" size={65} />
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Icon name="skip-next" color="white" size={65} />
+            </TouchableOpacity>
           </View>
         </View>
       </SwipeablePanel>
@@ -125,8 +166,15 @@ const BottomTab = () => {
 };
 
 const styles = StyleSheet.create({
-  icon: {},
+  controller: {
+    flexDirection: "row",
+    marginTop: 45,
+    justifyContent: "space-between",
+    width: width - 100,
+  },
+  audioBar: { marginTop: 30, paddingHorizontal: 10 },
   panelContainer: {
+    flex: 1,
     alignItems: "center",
     paddingBottom: 0,
     marginBottom: 0,
@@ -140,13 +188,12 @@ const styles = StyleSheet.create({
   },
   pannelSong: {
     color: "white",
-    alignSelf: "center",
     fontSize: 20,
     fontWeight: "bold",
   },
   pannelArtist: {
     color: "white",
-    alignSelf: "center",
+
     fontSize: 15,
     fontWeight: "bold",
     opacity: 0.7,
