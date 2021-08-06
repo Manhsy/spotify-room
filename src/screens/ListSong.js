@@ -7,12 +7,14 @@ import {
   Image,
   ScrollView,
   SafeAreaView,
+  Dimensions,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import SongCard from "../components/SongCard";
 import TextTicker from "react-native-text-ticker";
-
+import BottomTab from "../components/BottomTab";
+const { height, width } = Dimensions.get("window");
 const ListSong = (props) => {
   const [songs, setSongs] = useState();
   const [albumCover, setAlbumCover] = useState();
@@ -53,27 +55,35 @@ const ListSong = (props) => {
       style={{ width: "100%", height: "100%", flex: 1 }}
       source={require("../backgroundImage/CRkXWm.jpeg")}
     >
-      <SafeAreaView>
+      <SafeAreaView style={styles.container}>
         <ScrollView>
-          <View style={styles.container}>
+          <View>
             <View style={styles.shadow}>
               <Image style={styles.image} source={{ uri: albumCover }} />
             </View>
-
-            <TextTicker
-              style={styles.albumTitle}
-              duration={9000}
-              scroll={false}
-              animationType="auto"
-              bounce={false}
-            >
-              {albumName}
-            </TextTicker>
+            <View style={{ alignItems: "center" }}>
+              <TextTicker
+                style={styles.albumTitle}
+                duration={9000}
+                scroll={false}
+                animationType="auto"
+                bounce={false}
+              >
+                {albumName}
+              </TextTicker>
+            </View>
 
             <SongCard songs={songs} navigation={props.navigation} />
           </View>
         </ScrollView>
       </SafeAreaView>
+      <View
+        style={{
+          marginBottom: 35,
+        }}
+      >
+        <BottomTab />
+      </View>
     </ImageBackground>
   );
 };
@@ -81,15 +91,17 @@ const ListSong = (props) => {
 const styles = StyleSheet.create({
   albumTitle: {
     fontWeight: "bold",
+    paddingBottom: 10,
     fontSize: 25,
     color: "white",
-    position: "relative",
+    alignSelf: "center",
   },
   image: {
     marginBottom: 11,
     width: 250,
     height: 250,
     borderRadius: 5,
+    alignSelf: "center",
   },
   shadow: {
     shadowColor: "#202020",
@@ -98,10 +110,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
   },
   container: {
-    flexDirection: "column",
     flex: 1,
     paddingTop: "7%",
-    alignSelf: "center",
     alignItems: "center",
   },
 });

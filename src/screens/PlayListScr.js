@@ -56,7 +56,6 @@ const PlayScr = (props) => {
           </View>
         </ScrollView>
       </SafeAreaView>
-
       <View style={styles.bottomTab}>
         <BottomTab />
       </View>

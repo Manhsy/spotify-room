@@ -30,7 +30,7 @@ const BottomTab = () => {
     onPressCloseButton: () => closePanel(),
     // ...or any prop you want
   });
-  const [isPanelActive, setIsPanelActive] = useState(true);
+  const [isPanelActive, setIsPanelActive] = useState(false);
   const [curSongPlaying, setCurSongPlaying] = useState("");
   const [artists, setArtists] = useState([]);
   const [image, setImage] = useState();
@@ -47,7 +47,6 @@ const BottomTab = () => {
 
   const pause = async () => {
     setIsPaused(!isPaused);
-
     await axios.put("https://api.spotify.com/v1/me/player/pause", {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -89,7 +88,16 @@ const BottomTab = () => {
       <TouchableOpacity style={styles.tab} onPress={() => openPanel()}>
         <Image style={styles.image} source={{ uri: image }} />
         <View style={styles.textContainer}>
-          <Text style={styles.song}>{curSongPlaying}</Text>
+          <TextTicker
+            style={styles.song}
+            duration={10000}
+            scroll={false}
+            animationType="auto"
+            bounce={false}
+          >
+            {curSongPlaying}
+          </TextTicker>
+
           <Text style={styles.artist}>
             {artists.map((name, index) => {
               if (index + 1 !== artists.length) {
@@ -108,7 +116,6 @@ const BottomTab = () => {
           )}
         </TouchableOpacity>
       </TouchableOpacity>
-
       <SwipeablePanel {...panelProps} isActive={isPanelActive}>
         <View style={styles.panelContainer}>
           <Image style={styles.largeImage} source={{ uri: image }} />
@@ -152,8 +159,12 @@ const BottomTab = () => {
               <Icon name="skip-previous" color="white" size={65} />
             </TouchableOpacity>
 
-            <TouchableOpacity>
-              <Feather name="pause-circle" color="white" size={65} />
+            <TouchableOpacity onPress={() => pause()}>
+              {isPaused ? (
+                <Feather name="pause-circle" color="white" size={65} />
+              ) : (
+                <Feather name="play-circle" color="white" size={65} />
+              )}
             </TouchableOpacity>
             <TouchableOpacity>
               <Icon name="skip-next" color="white" size={65} />

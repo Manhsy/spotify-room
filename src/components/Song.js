@@ -16,45 +16,43 @@ const Song = (props) => {
   const imageLength = song.track.album.images.length;
 
   return (
-    <View>
-      <TouchableOpacity
-        onPress={() => {
-          props.navigation.navigate("Play", {
-            song,
-          });
-        }}
-        style={styles.borderContainer}
-      >
-        <View style={styles.container}>
-          <Text style={styles.index}>{ind}</Text>
-          <View style={styles.imageContainer}>
-            <Image
-              style={styles.image}
-              source={{
-                uri: song.track.album.images[
-                  Math.floor(Math.random() * imageLength)
-                ].url,
-              }}
-            />
-          </View>
-          <View
-            style={{
-              flexDirection: "column",
+    <TouchableOpacity
+      onPress={() => {
+        props.navigation.navigate("Play", {
+          song,
+        });
+      }}
+      style={styles.borderContainer}
+    >
+      <View style={styles.container}>
+        <Text style={styles.index}>{ind}</Text>
+        <View style={styles.imageContainer}>
+          <Image
+            style={styles.image}
+            source={{
+              uri: song.track.album.images[
+                Math.floor(Math.random() * imageLength)
+              ].url,
             }}
-          >
-            <Text numberOfLines={1} style={styles.name}>
-              {song.track.name.length > 25
-                ? song.track.name.slice(0, 25) + "...         "
-                : song.track.name}
-            </Text>
-            <Text style={styles.artistName}>
-              {song.track.album.artists[0].name}
-            </Text>
-          </View>
-          <Icon style={styles.icon} name="playcircleo" size={17} />
+          />
         </View>
-      </TouchableOpacity>
-    </View>
+        <View
+          style={{
+            flexDirection: "column",
+          }}
+        >
+          <Text numberOfLines={1} style={styles.name}>
+            {song.track.name.length > 25
+              ? song.track.name.slice(0, 25) + "...         "
+              : song.track.name}
+          </Text>
+          <Text style={styles.artistName}>
+            {song.track.album.artists[0].name}
+          </Text>
+        </View>
+        <Icon style={styles.icon} name="playcircleo" size={17} />
+      </View>
+    </TouchableOpacity>
   );
 };
 
