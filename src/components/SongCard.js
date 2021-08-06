@@ -12,7 +12,11 @@ const SingleTrackCard = ({ songs, navigation }) => {
             item.track.id + (Math.random() + 1).toString(36).substring(7)
           }
           renderItem={({ item }) => (
-            <Song songs={item} index={songs.indexOf(item)} />
+            <Song
+              songs={item}
+              index={songs.indexOf(item)}
+              navigation={navigation}
+            />
           )}
         />
       </ScrollView>

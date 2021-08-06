@@ -27,35 +27,39 @@ const Track = (props) => {
       setName();
       setImage();
       setTotal();
+      setPlaylistId();
     };
-  });
+  }, []);
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.border}
-        onPress={() => {
-          props.navigation.navigate("ListSong", { playListId, image, name });
-        }}
-      >
-        <View style={styles.subBorder}>
-          <Image style={styles.image} source={{ uri: image }} />
-          <View style={styles.textView}>
-            <View style={{ flexDirection: "column" }}>
-              <Text numOfLines={1} style={styles.name}>
-                {name.length > 30 ? name.slice(0, 30) + "..." : name}
-              </Text>
-              <Text numOfLines={1} style={styles.sub}>
-                {total} Tracks
-              </Text>
-            </View>
-          </View>
-          <View style={styles.icon}>
-            <Icon name="right" size={17} color={"red"} />
+    <TouchableOpacity
+      style={styles.border}
+      onPress={() => {
+        props.navigation.navigate("ListSong", {
+          playListId,
+          image,
+          name,
+          props,
+        });
+      }}
+    >
+      <View style={styles.subBorder}>
+        <Image style={styles.image} source={{ uri: image }} />
+        <View style={styles.textView}>
+          <View style={{ flexDirection: "column" }}>
+            <Text numOfLines={1} style={styles.name}>
+              {name.length > 30 ? name.slice(0, 30) + "..." : name}
+            </Text>
+            <Text numOfLines={1} style={styles.sub}>
+              {total} Tracks
+            </Text>
           </View>
         </View>
-      </TouchableOpacity>
-    </View>
+        <View style={styles.icon}>
+          <Icon name="right" size={17} color={"red"} />
+        </View>
+      </View>
+    </TouchableOpacity>
   );
 };
 
@@ -87,7 +91,7 @@ const styles = StyleSheet.create({
     flex: 1,
     shadowOpacity: 0.4,
     shadowRadius: 4,
-    shadowOffset: { width: 0, height: 4 },
+    shadowOffset: { width: 0, height: 10 },
   },
   textView: {
     marginHorizontal: 10,

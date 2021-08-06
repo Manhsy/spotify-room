@@ -11,6 +11,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import SongCard from "../components/SongCard";
+import TextTicker from "react-native-text-ticker";
 
 const ListSong = (props) => {
   const [songs, setSongs] = useState();
@@ -19,13 +20,13 @@ const ListSong = (props) => {
   const [albumName, setAlbumName] = useState("");
 
   useEffect(() => {
-    setAlbumCover(props.navigation.state.params.image);
-    setAlbumName(props.navigation.state.params.name);
-
     const getSongs = async () => {
       try {
+        setAlbumCover(props.navigation.state.params.image);
+        setAlbumName(props.navigation.state.params.name);
         setPlaylistId(props.navigation.state.params.playListId);
         const auth = await AsyncStorage.getItem("SpotifyAuth");
+        console.log(auth);
         const songs = await axios.get(
           `https://api.spotify.com/v1/playlists/${playlistID}/tracks?market=${"US"}`,
           {
@@ -41,6 +42,9 @@ const ListSong = (props) => {
     getSongs();
     return () => {
       setSongs();
+      setAlbumCover();
+      setAlbumName("");
+      setPlaylistId();
     };
   }, []);
 
@@ -52,12 +56,20 @@ const ListSong = (props) => {
       <SafeAreaView>
         <ScrollView>
           <View style={styles.container}>
-            <Image style={styles.image} source={{ uri: albumCover }} />
-            <Text style={styles.albumTitle}>
-              {albumName.length > 25
-                ? albumName.slice(0, 25) + "..."
-                : albumName}
-            </Text>
+            <View style={styles.shadow}>
+              <Image style={styles.image} source={{ uri: albumCover }} />
+            </View>
+            <View style={{ paddingHorizontal: 50 }}>
+              <TextTicker
+                style={styles.albumTitle}
+                duration={9000}
+                scroll={false}
+                animationType="auto"
+                bounce={false}
+              >
+                {albumName}
+              </TextTicker>
+            </View>
             <SongCard songs={songs} navigation={props.navigation} />
           </View>
         </ScrollView>
@@ -78,15 +90,15 @@ const styles = StyleSheet.create({
     width: 250,
     height: 250,
     borderRadius: 5,
-    shadowColor: "grey",
-    shadowOpacity: 1,
-    shadowOffset: {
-      width: 251,
-      height: 251,
-    },
+  },
+  shadow: {
+    shadowColor: "#202020",
+    shadowOffset: { height: 4 },
     shadowRadius: 5,
+    shadowOpacity: 0.8,
   },
   container: {
+    flexDirection: "column",
     flex: 1,
     paddingTop: "7%",
     alignSelf: "center",

@@ -1,19 +1,40 @@
 import React from "react";
-import { Text, View, StyleSheet, TouchableOpacity, Image } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  Dimensions,
+} from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
+const dimensions = Dimensions.get("window");
 
 const Song = (props) => {
   const song = props.songs;
   const ind = props.index;
+  const imageLength = song.track.album.images.length;
+
   return (
     <View>
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          props.navigation.navigate("Play", {
+            song,
+          });
+        }}
+        style={styles.borderContainer}
+      >
         <View style={styles.container}>
           <Text style={styles.index}>{ind}</Text>
           <View style={styles.imageContainer}>
             <Image
               style={styles.image}
-              source={{ uri: song.track.album.images[0].url }}
+              source={{
+                uri: song.track.album.images[
+                  Math.floor(Math.random() * imageLength)
+                ].url,
+              }}
             />
           </View>
           <View
@@ -38,6 +59,9 @@ const Song = (props) => {
 };
 
 const styles = StyleSheet.create({
+  borderContainer: {
+    width: dimensions.width - 50,
+  },
   container: {
     justifyContent: "flex-start",
     margin: 1,
