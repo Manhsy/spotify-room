@@ -13,6 +13,7 @@ const dimensions = Dimensions.get("window");
 const Song = (props) => {
   const song = props.songs;
   const ind = props.index;
+  const color = ind % 2 == 0 ? "#c28fde" : "";
   const imageLength = song.track.album.images.length;
 
   return (
@@ -25,7 +26,14 @@ const Song = (props) => {
       style={styles.borderContainer}
     >
       <View style={styles.container}>
-        <Text style={styles.index}>{ind}</Text>
+        {/* <View
+          style={{
+            width: 45,
+          }}
+        >
+          <Text style={styles.index}>{ind}</Text>
+        </View> */}
+
         <View style={styles.imageContainer}>
           <Image
             style={styles.image}
@@ -58,7 +66,8 @@ const Song = (props) => {
 
 const styles = StyleSheet.create({
   borderContainer: {
-    width: dimensions.width - 50,
+    width: dimensions.width - 20,
+    borderRadius: 5,
   },
   container: {
     justifyContent: "flex-start",
@@ -76,6 +85,7 @@ const styles = StyleSheet.create({
     marginRight: 15,
     marginTop: 15,
     fontSize: 17,
+    alignSelf: "flex-start",
   },
   imageContainer: {
     marginHorizontal: 10,

@@ -26,7 +26,6 @@ const ListSong = (props) => {
     const getSongs = async () => {
       try {
         const auth = await AsyncStorage.getItem("SpotifyAuth");
-        console.log(auth);
         const songs = await axios.get(
           `https://api.spotify.com/v1/playlists/${playlistID}/tracks?market=${"US"}`,
           {
@@ -52,7 +51,7 @@ const ListSong = (props) => {
     >
       <SafeAreaView style={styles.container}>
         <ScrollView>
-          <View>
+          <View style={{ alignSelf: "center" }}>
             <View style={styles.shadow}>
               <Image style={styles.image} source={{ uri: albumCover }} />
             </View>
@@ -65,7 +64,6 @@ const ListSong = (props) => {
             >
               <TT text={albumName} styles={styles.albumTitle} />
             </View>
-
             <SongCard songs={songs} navigation={props.navigation} />
           </View>
         </ScrollView>
@@ -105,7 +103,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: "7%",
-    alignItems: "center",
   },
 });
 export default ListSong;
