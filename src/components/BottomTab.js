@@ -86,6 +86,10 @@ const BottomTab = () => {
     rerender();
   };
 
+  const callRerender = () => {
+    setInterval(rerender, 5000);
+  };
+
   const rerender = async () => {
     const response = await axios.get("https://api.spotify.com/v1/me/player", {
       headers: { Authorization: `Bearer ${token}` },
@@ -117,6 +121,7 @@ const BottomTab = () => {
         console.log(err);
       }
     };
+
     getSong();
     return () => {
       setIsPanelActive(false);
