@@ -11,7 +11,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import AlbumCard from "../components/AlbumCard";
 import BottomTab from "../components/BottomTab";
-import ProgressBar from "../components/AudioProgressBar";
 
 const PlayScr = (props) => {
   const roomName = props.navigation.state.params.roomName;
@@ -56,7 +55,6 @@ const PlayScr = (props) => {
             <AlbumCard playList={playList} navigation={props.navigation} />
           </View>
         </ScrollView>
-        <ProgressBar />
       </SafeAreaView>
       <View
         style={{

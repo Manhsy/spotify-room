@@ -87,7 +87,7 @@ const BottomTab = () => {
   };
 
   const callRerender = () => {
-    setInterval(rerender, 5000);
+    setInterval(rerender, 50000);
   };
 
   const rerender = async () => {
