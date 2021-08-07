@@ -8,7 +8,9 @@ import {
   Dimensions,
 } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
-const dimensions = Dimensions.get("window");
+import TT from "./TextTicker";
+
+const { width, height } = Dimensions.get("window");
 
 const Song = (props) => {
   const song = props.songs;
@@ -41,11 +43,10 @@ const Song = (props) => {
             flexDirection: "column",
           }}
         >
-          <Text numberOfLines={1} style={styles.name}>
-            {song.track.name.length > 25
-              ? song.track.name.slice(0, 25) + "...         "
-              : song.track.name}
-          </Text>
+          <View style={{ width: width - 135 }}>
+            <TT text={song.track.name} styles={styles.name} />
+          </View>
+
           <Text style={styles.artistName}>
             {song.track.album.artists[0].name}
           </Text>
@@ -58,7 +59,7 @@ const Song = (props) => {
 
 const styles = StyleSheet.create({
   borderContainer: {
-    width: dimensions.width - 20,
+    width: width - 20,
     borderRadius: 5,
   },
   container: {
