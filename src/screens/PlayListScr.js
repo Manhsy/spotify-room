@@ -65,7 +65,7 @@ const PlayScr = (props) => {
 
 const styles = StyleSheet.create({
   bottomTab: {
-    marginBottom: 35,
+    marginBottom: 0,
   },
   container: {
     flex: 1,

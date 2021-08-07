@@ -12,7 +12,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import SongCard from "../components/SongCard";
-import TextTicker from "react-native-text-ticker";
+import TT from "../components/TextTicker";
 import BottomTab from "../components/BottomTab";
 const { height, width } = Dimensions.get("window");
 const ListSong = (props) => {
@@ -61,16 +61,14 @@ const ListSong = (props) => {
             <View style={styles.shadow}>
               <Image style={styles.image} source={{ uri: albumCover }} />
             </View>
-            <View style={{ alignItems: "center" }}>
-              <TextTicker
-                style={styles.albumTitle}
-                duration={9000}
-                scroll={false}
-                animationType="auto"
-                bounce={false}
-              >
-                {albumName}
-              </TextTicker>
+            <View
+              style={{
+                alignSelf: "center",
+                alignItems: "center",
+                width: width / 1.3,
+              }}
+            >
+              <TT text={albumName} styles={styles.albumTitle} />
             </View>
 
             <SongCard songs={songs} navigation={props.navigation} />
@@ -79,7 +77,7 @@ const ListSong = (props) => {
       </SafeAreaView>
       <View
         style={{
-          marginBottom: 35,
+          marginBottom: 0,
         }}
       >
         <BottomTab />

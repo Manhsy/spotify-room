@@ -8,7 +8,7 @@ import {
   Image,
 } from "react-native";
 import { Divider } from "react-native-elements";
-import TextTicker from "react-native-text-ticker";
+import TT from "./TextTicker";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Feather from "react-native-vector-icons/Feather";
 import { SwipeablePanel } from "rn-swipeable-panel";
@@ -88,27 +88,19 @@ const BottomTab = () => {
       <TouchableOpacity style={styles.tab} onPress={() => openPanel()}>
         <Image style={styles.image} source={{ uri: image }} />
         <View style={styles.textContainer}>
-          <TextTicker
-            style={styles.song}
-            duration={10000}
-            scroll={false}
-            animationType="auto"
-            bounce={false}
-          >
-            {curSongPlaying}
-          </TextTicker>
-
-          <Text style={styles.artist}>
-            {artists.map((name, index) => {
+          <Text style={styles.song}>{curSongPlaying}</Text>
+          <TT
+            text={artists.map((name, index) => {
               if (index + 1 !== artists.length) {
                 return name + ", ";
               } else {
                 return name;
               }
             })}
-          </Text>
+            style={styles.artist}
+          />
         </View>
-        <TouchableOpacity onPress={() => pause()} style={styles.icon}>
+        <TouchableOpacity onPress={() => pause()}>
           {isPaused ? (
             <Icon name="pause" size={35} color={"white"} />
           ) : (
@@ -119,31 +111,23 @@ const BottomTab = () => {
       <SwipeablePanel {...panelProps} isActive={isPanelActive}>
         <View style={styles.panelContainer}>
           <Image style={styles.largeImage} source={{ uri: image }} />
-          <View style={{ marginTop: 40, alignItems: "center" }}>
-            <TextTicker
-              style={styles.pannelSong}
-              duration={10000}
-              scroll={false}
-              animationType="auto"
-              bounce={false}
-            >
-              {curSongPlaying}
-            </TextTicker>
-            <TextTicker
-              style={styles.pannelArtist}
-              duration={10000}
-              scroll={false}
-              animationType="auto"
-              bounce={false}
-            >
-              {artists.map((name, index) => {
+          <View
+            style={{
+              marginTop: 40,
+              alignItems: "center",
+            }}
+          >
+            <TT text={curSongPlaying} styles={styles.pannelSong} />
+            <TT
+              styles={styles.pannelArtist}
+              text={artists.map((name, index) => {
                 if (index + 1 !== artists.length) {
                   return name + ", ";
                 } else {
                   return name;
                 }
               })}
-            </TextTicker>
+            />
           </View>
           <View style={{ width: width - 80 }}>
             <Divider
@@ -204,7 +188,6 @@ const styles = StyleSheet.create({
   },
   pannelArtist: {
     color: "white",
-
     fontSize: 15,
     fontWeight: "bold",
     opacity: 0.7,
@@ -217,6 +200,7 @@ const styles = StyleSheet.create({
   image: {
     width: 55,
     height: 55,
+    borderRadius: 3,
   },
 
   textContainer: {
@@ -228,6 +212,7 @@ const styles = StyleSheet.create({
     width: width - 20,
     height: height / 15,
     alignItems: "center",
+    marginBottom: 30,
   },
 });
 export default BottomTab;
