@@ -26,14 +26,6 @@ const Song = (props) => {
       style={styles.borderContainer}
     >
       <View style={styles.container}>
-        {/* <View
-          style={{
-            width: 45,
-          }}
-        >
-          <Text style={styles.index}>{ind}</Text>
-        </View> */}
-
         <View style={styles.imageContainer}>
           <Image
             style={styles.image}
