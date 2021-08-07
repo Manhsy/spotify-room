@@ -17,16 +17,14 @@ import BottomTab from "../components/BottomTab";
 const { height, width } = Dimensions.get("window");
 const ListSong = (props) => {
   const [songs, setSongs] = useState();
-  const [albumCover, setAlbumCover] = useState();
-  const [playlistID, setPlaylistId] = useState();
-  const [albumName, setAlbumName] = useState("");
+
+  const albumCover = props.navigation.state.params.image;
+  const albumName = props.navigation.state.params.name;
+  const playlistID = props.navigation.state.params.playListId;
 
   useEffect(() => {
     const getSongs = async () => {
       try {
-        setAlbumCover(props.navigation.state.params.image);
-        setAlbumName(props.navigation.state.params.name);
-        setPlaylistId(props.navigation.state.params.playListId);
         const auth = await AsyncStorage.getItem("SpotifyAuth");
         console.log(auth);
         const songs = await axios.get(
@@ -44,9 +42,6 @@ const ListSong = (props) => {
     getSongs();
     return () => {
       setSongs();
-      setAlbumCover();
-      setAlbumName("");
-      setPlaylistId();
     };
   }, []);
 

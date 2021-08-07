@@ -12,7 +12,7 @@ const SingleTrackCard = ({ songs, navigation }) => {
       renderItem={({ item }) => (
         <Song
           songs={item}
-          index={songs.indexOf(item)}
+          index={songs.indexOf(item) + 1}
           navigation={navigation}
         />
       )}
