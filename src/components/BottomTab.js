@@ -28,7 +28,6 @@ const BottomTab = () => {
     closeOnTouchOutside: true,
     onClose: () => closePanel(),
     onPressCloseButton: () => closePanel(),
-    // ...or any prop you want
   });
   const [isPanelActive, setIsPanelActive] = useState(false);
   const [curSongPlaying, setCurSongPlaying] = useState("");
@@ -47,10 +46,54 @@ const BottomTab = () => {
 
   const pause = async () => {
     setIsPaused(!isPaused);
-    await axios.put("https://api.spotify.com/v1/me/player/pause", {
+    if (isPaused) {
+      await axios.put(
+        "https://api.spotify.com/v1/me/player/pause",
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+    } else {
+      await axios.put(
+        "https://api.spotify.com/v1/me/player/play",
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+    }
+  };
+
+  const next = async () => {
+    await axios.post(
+      "https://api.spotify.com/v1/me/player/next",
+      {},
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    rerender();
+  };
+  const prev = async () => {
+    await axios.post(
+      "https://api.spotify.com/v1/me/player/previous",
+      {},
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    rerender();
+  };
+
+  const rerender = async () => {
+    const response = await axios.get("https://api.spotify.com/v1/me/player", {
       headers: { Authorization: `Bearer ${token}` },
     });
-    console.log(res);
+
+    setCurSongPlaying(response.data.item.name);
+    setArtists(response.data.item.artists.map((artist, index) => artist.name));
+    setImage(response.data.item.album.images[0].url);
   };
 
   useEffect(() => {
@@ -85,6 +128,16 @@ const BottomTab = () => {
 
   return (
     <View style={{ alignItems: "center" }}>
+      <View style={{ width: width - 10, borderRadius: 2 }}>
+        <Divider
+          width={3}
+          color="black"
+          length={width}
+          orientation="horizontal"
+          style={styles.audioBar}
+        />
+      </View>
+
       <TouchableOpacity style={styles.tab} onPress={() => openPanel()}>
         <Image style={styles.image} source={{ uri: image }} />
         <View style={styles.textContainer}>
@@ -135,11 +188,11 @@ const BottomTab = () => {
               color="white"
               length={width / 2}
               orientation="horizontal"
-              style={styles.audioBar}
+              style={styles.pannelAudioBar}
             />
           </View>
           <View style={styles.controller}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => prev()}>
               <Icon name="skip-previous" color="white" size={65} />
             </TouchableOpacity>
 
@@ -150,7 +203,7 @@ const BottomTab = () => {
                 <Feather name="play-circle" color="white" size={65} />
               )}
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => next()}>
               <Icon name="skip-next" color="white" size={65} />
             </TouchableOpacity>
           </View>
@@ -167,7 +220,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: width - 100,
   },
-  audioBar: { marginTop: 30, paddingHorizontal: 10 },
+  audioBar: {
+    marginTop: 0,
+    paddingHorizontal: 2,
+  },
+  pannelAudioBar: { marginTop: 30, paddingHorizontal: 10 },
   panelContainer: {
     flex: 1,
     alignItems: "center",
