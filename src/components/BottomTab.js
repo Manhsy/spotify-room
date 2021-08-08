@@ -14,6 +14,7 @@ import Feather from "react-native-vector-icons/Feather";
 import { SwipeablePanel } from "rn-swipeable-panel";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import ProgressBar from "./ProgressBar";
 const { height, width } = Dimensions.get("window");
 
 const BottomTab = () => {
@@ -35,6 +36,7 @@ const BottomTab = () => {
   const [image, setImage] = useState();
   const [token, setToken] = useState();
   const [isPaused, setIsPaused] = useState(true);
+  const [artist, setArtist] = useState("");
 
   const openPanel = () => {
     setIsPanelActive(true);
@@ -97,6 +99,15 @@ const BottomTab = () => {
 
     setCurSongPlaying(response.data.item.name);
     setArtists(response.data.item.artists.map((artist, index) => artist.name));
+    setArtist(
+      artists.map((name, index) => {
+        if (index + 1 !== artists.length) {
+          return name + ", ";
+        } else {
+          return name;
+        }
+      })
+    );
     setImage(response.data.item.album.images[0].url);
   };
 
@@ -116,6 +127,15 @@ const BottomTab = () => {
         setArtists(
           response.data.item.artists.map((artist, index) => artist.name)
         );
+        setArtist(
+          artists.map((name, index) => {
+            if (index + 1 !== artists.length) {
+              return name + ", ";
+            } else {
+              return name;
+            }
+          })
+        );
         setImage(response.data.item.album.images[0].url);
       } catch (err) {
         console.log(err);
@@ -127,36 +147,24 @@ const BottomTab = () => {
       setIsPanelActive(false);
       setCurSongPlaying("");
       setArtists([]);
+      setArtist("");
       setImage("");
     };
   }, []);
 
   return (
     <View style={{ alignItems: "center" }}>
-      <View style={{ width: width - 10, borderRadius: 2 }}>
-        <Divider
-          width={3}
-          color="black"
-          length={width}
-          orientation="horizontal"
-          style={styles.audioBar}
-        />
+      <View
+        style={{ width: width - 10, borderRadius: 2, alignItems: "center" }}
+      >
+        <ProgressBar h={7} w={7} onChange={rerender} />
       </View>
 
       <TouchableOpacity style={styles.tab} onPress={() => openPanel()}>
         <Image style={styles.image} source={{ uri: image }} />
         <View style={styles.textContainer}>
           <Text style={styles.song}>{curSongPlaying}</Text>
-          <TT
-            text={artists.map((name, index) => {
-              if (index + 1 !== artists.length) {
-                return name + ", ";
-              } else {
-                return name;
-              }
-            })}
-            style={styles.artist}
-          />
+          <TT text={artist} style={styles.artist} />
         </View>
         <TouchableOpacity onPress={() => pause()}>
           {isPaused ? (
@@ -173,19 +181,16 @@ const BottomTab = () => {
             style={{
               marginTop: 40,
               alignItems: "center",
+              width: width - 100,
             }}
           >
             <TT text={curSongPlaying} styles={styles.pannelSong} />
-            <TT
-              styles={styles.pannelArtist}
-              text={artists.map((name, index) => {
-                if (index + 1 !== artists.length) {
-                  return name + ", ";
-                } else {
-                  return name;
-                }
-              })}
-            />
+
+            <View style={{ width: width - 200, alignItems: "center" }}>
+              <Text numberOfLines={1} style={styles.pannelArtist}>
+                {artist}
+              </Text>
+            </View>
           </View>
           <View style={{ width: width - 80 }}>
             <Divider
