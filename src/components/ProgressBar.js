@@ -57,7 +57,7 @@ const ProgressBar = ({ h, w, customLabel, barWidth, pannel, onChange }) => {
         setCurrentTime(response.data.progress_ms);
       })
       .catch((err) => {
-        console.log("error in reredering progress bar");
+        console.log("error in rendering progress bar");
         console.log(err);
       });
     onChange();
