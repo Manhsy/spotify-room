@@ -7,7 +7,6 @@ import {
   Dimensions,
   Image,
 } from "react-native";
-import { Divider } from "react-native-elements";
 import TT from "./TextTicker";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Feather from "react-native-vector-icons/Feather";
@@ -15,6 +14,7 @@ import { SwipeablePanel } from "rn-swipeable-panel";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import ProgressBar from "./ProgressBar";
+import PannelProgressBar from "./PannelProgressBar";
 const { height, width } = Dimensions.get("window");
 
 const BottomTab = () => {
@@ -157,7 +157,13 @@ const BottomTab = () => {
       <View
         style={{ width: width - 10, borderRadius: 2, alignItems: "center" }}
       >
-        <ProgressBar h={7} w={7} onChange={rerender} />
+        <ProgressBar
+          h={7}
+          w={7}
+          barWidth={width - 20}
+          onChange={rerender}
+          pannel={false}
+        />
       </View>
 
       <TouchableOpacity style={styles.tab} onPress={() => openPanel()}>
@@ -186,19 +192,28 @@ const BottomTab = () => {
           >
             <TT text={curSongPlaying} styles={styles.pannelSong} />
 
-            <View style={{ width: width - 200, alignItems: "center" }}>
+            <View
+              style={{
+                width: width - 80,
+
+                alignItems: "center",
+              }}
+            >
               <Text numberOfLines={1} style={styles.pannelArtist}>
                 {artist}
               </Text>
             </View>
           </View>
-          <View style={{ width: width - 80 }}>
-            <Divider
-              width={5}
-              color="white"
-              length={width / 2}
-              orientation="horizontal"
-              style={styles.pannelAudioBar}
+          <View
+            style={{
+              alignItems: "center",
+            }}
+          >
+            <PannelProgressBar
+              h={10}
+              w={10}
+              barWidth={width - 100}
+              onChange={rerender}
             />
           </View>
           <View style={styles.controller}>
