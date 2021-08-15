@@ -15,7 +15,6 @@ const { width, height } = Dimensions.get("window");
 const Song = (props) => {
   const song = props.songs;
   const ind = props.index;
-  const color = ind % 2 == 0 ? "#c28fde" : "";
   const imageLength = song.track.album.images.length;
 
   return (
