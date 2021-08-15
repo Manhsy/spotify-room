@@ -1,6 +1,5 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunkMiddleWare from "redux-thunk";
-import { composeWithDevTools } from "redux-devtools-extension/developmentOnly";
 import playerState from "./reducers/PlayerReducers";
 
 const reducers = combineReducers({
