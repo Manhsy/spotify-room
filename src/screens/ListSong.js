@@ -73,7 +73,7 @@ const ListSong = (props) => {
           marginBottom: 0,
         }}
       >
-        <BottomTab />
+        <BottomTab navigation={props.navigation} />
       </View>
     </ImageBackground>
   );

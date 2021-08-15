@@ -1,12 +1,5 @@
-import React, { useState, useEffect } from "react";
-import {
-  ScrollView,
-  SafeAreaView,
-  StyleSheet,
-  FlatList,
-  Animated,
-  StatusBar,
-} from "react-native";
+import React from "react";
+import { StyleSheet, FlatList, Animated, StatusBar } from "react-native";
 import Track from "./Track";
 
 const AlbumCard = ({ playList, navigation }) => {

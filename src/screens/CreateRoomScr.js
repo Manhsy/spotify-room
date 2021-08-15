@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   Text,
@@ -12,6 +12,9 @@ import CustButton from "../components/CustButton";
 import SpotifyLogin from "../api/spotifyLogin";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import { connect } from "react-redux";
+import * as actions from "../redux/actions/playerActions";
+
 const CreateRoomScr = (props) => {
   const [roomName, setRoomName] = useState("");
   const [error, setError] = useState("");
@@ -20,7 +23,7 @@ const CreateRoomScr = (props) => {
     try {
       const response = await SpotifyLogin();
       await AsyncStorage.setItem("SpotifyAuth", response);
-
+      props.getInitialStates();
       props.navigation.navigate("PlayList", { roomName });
     } catch (err) {
       console.log(err);
@@ -108,4 +111,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateRoomScr;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getInitialStates: () => {
+      dispatch(actions.getInitialStates());
+    },
+  };
+};
+
+export default connect(null, mapDispatchToProps)(CreateRoomScr);

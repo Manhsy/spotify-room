@@ -8,6 +8,9 @@ import JoinARoomScr from "./src/screens/JoinARoomScr";
 import PlayList from "./src/screens/PlayListScr";
 import ListSong from "./src/screens/ListSong";
 
+import { Provider } from "react-redux";
+import store from "./src/redux/store";
+
 const navigator = createSwitchNavigator(
   {
     Home: DefaultScr,
@@ -33,14 +36,10 @@ const navigator = createSwitchNavigator(
 );
 const App = createAppContainer(navigator);
 
-const app = () => {
+export default () => {
   return (
-    <ImageBackground
-      style={{ width: "100%", height: "100%", flex: 1 }}
-      source={require("./src/backgroundImage/CRkXWm.jpeg")}
-    >
+    <Provider store={store}>
       <App />
-    </ImageBackground>
+    </Provider>
   );
 };
-export default App;

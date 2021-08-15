@@ -3,12 +3,15 @@ import { View, Text, StyleSheet, Dimensions } from "react-native";
 import Slider from "@react-native-community/slider";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import { render } from "react-dom";
-const { width, height } = Dimensions.get("window");
+import { connect } from "react-redux";
+import * as actions from "../redux/actions/playerActions";
 
-const ProgressBar = ({ h, w, customLabel, barWidth, pannel, onChange }) => {
+const { height, width } = Dimensions.get("window");
+
+const ProgressBar = (props, { barWidth }) => {
+  const { isPlaying } = props.playerState;
+
   const [token, setToken] = useState();
-  const [isPlaying, setIsPlaying] = useState(false);
   const [totalTime, setTotalTime] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
 
@@ -17,15 +20,12 @@ const ProgressBar = ({ h, w, customLabel, barWidth, pannel, onChange }) => {
       try {
         const token = await AsyncStorage.getItem("SpotifyAuth");
         setToken(token);
-
         const response = await axios.get(
           "https://api.spotify.com/v1/me/player",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-
-        setIsPlaying(response.data.is_playing);
         setTotalTime(response.data.item.duration_ms);
         setCurrentTime(response.data.progress_ms);
       } catch (err) {
@@ -39,12 +39,11 @@ const ProgressBar = ({ h, w, customLabel, barWidth, pannel, onChange }) => {
       if (isPlaying) setCurrentTime((currentTime) => currentTime + 1000);
     }, 1000);
     return () => {
-      setIsPlaying(false);
       setTotalTime(0);
       setCurrentTime(0);
       clearInterval(interval);
     };
-  }, []);
+  }, [isPlaying]);
 
   const rerender = () => {
     axios
@@ -52,7 +51,6 @@ const ProgressBar = ({ h, w, customLabel, barWidth, pannel, onChange }) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        setIsPlaying(response.data.is_playing);
         setTotalTime(response.data.item.duration_ms);
         setCurrentTime(response.data.progress_ms);
       })
@@ -60,8 +58,9 @@ const ProgressBar = ({ h, w, customLabel, barWidth, pannel, onChange }) => {
         console.log("error in rendering progress bar");
         console.log(err);
       });
-    onChange();
-
+    setTimeout(() => {
+      props.getCurrentState();
+    }, 3000);
     return (
       <Slider
         style={{ width: barWidth }}
@@ -73,7 +72,7 @@ const ProgressBar = ({ h, w, customLabel, barWidth, pannel, onChange }) => {
     );
   };
   return (
-    <View>
+    <View style={{ width: width }}>
       {currentTime >= totalTime ? (
         rerender()
       ) : (
@@ -91,4 +90,20 @@ const ProgressBar = ({ h, w, customLabel, barWidth, pannel, onChange }) => {
 
 const styles = StyleSheet.create({});
 
-export default ProgressBar;
+const mapStateToProps = (state) => {
+  const { playerState } = state;
+  return {
+    playerState: playerState,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    play: () => dispatch(actions.play()),
+    pause: () => dispatch(actions.pause()),
+    next: () => dispatch(actions.next()),
+    prev: () => dispatch(actions.prev()),
+    getCurrentState: () => dispatch(actions.getInitialStates()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProgressBar);

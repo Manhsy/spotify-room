@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,15 +9,20 @@ import {
 } from "react-native";
 import TT from "./TextTicker";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import Feather from "react-native-vector-icons/Feather";
 import { SwipeablePanel } from "rn-swipeable-panel";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
 import ProgressBar from "./ProgressBar";
 import PannelProgressBar from "./PannelProgressBar";
+import { connect } from "react-redux";
+import * as actions from "../redux/actions/playerActions";
+
 const { height, width } = Dimensions.get("window");
 
-const BottomTab = () => {
+const BottomTab = (props, { navigation }) => {
+  //player states
+  const { artists, currentSong, image, isPlaying } = props.playerState;
+
+  //panel
+  const [isPanelActive, setIsPanelActive] = useState(false);
   const [panelProps, setPanelProps] = useState({
     fullWidth: true,
     openLarge: true,
@@ -30,14 +35,6 @@ const BottomTab = () => {
     onClose: () => closePanel(),
     onPressCloseButton: () => closePanel(),
   });
-  const [isPanelActive, setIsPanelActive] = useState(false);
-  const [curSongPlaying, setCurSongPlaying] = useState("");
-  const [artists, setArtists] = useState([]);
-  const [image, setImage] = useState();
-  const [token, setToken] = useState();
-  const [isPaused, setIsPaused] = useState(true);
-  const [artist, setArtist] = useState("");
-
   const openPanel = () => {
     setIsPanelActive(true);
   };
@@ -46,110 +43,8 @@ const BottomTab = () => {
     setIsPanelActive(false);
   };
 
-  const pause = async () => {
-    setIsPaused(!isPaused);
-    if (isPaused) {
-      await axios.put(
-        "https://api.spotify.com/v1/me/player/pause",
-        {},
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-    } else {
-      await axios.put(
-        "https://api.spotify.com/v1/me/player/play",
-        {},
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-    }
-  };
-
-  const next = async () => {
-    await axios.post(
-      "https://api.spotify.com/v1/me/player/next",
-      {},
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-    rerender();
-  };
-  const prev = async () => {
-    await axios.post(
-      "https://api.spotify.com/v1/me/player/previous",
-      {},
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-    rerender();
-  };
-
-  const callRerender = () => {
-    setInterval(rerender, 50000);
-  };
-
-  const rerender = async () => {
-    const response = await axios.get("https://api.spotify.com/v1/me/player", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-
-    setCurSongPlaying(response.data.item.name);
-    setArtists(response.data.item.artists.map((artist, index) => artist.name));
-    setArtist(
-      artists.map((name, index) => {
-        if (index + 1 !== artists.length) {
-          return name + ", ";
-        } else {
-          return name;
-        }
-      })
-    );
-    setImage(response.data.item.album.images[0].url);
-  };
-
   useEffect(() => {
-    const getSong = async () => {
-      try {
-        const token = await AsyncStorage.getItem("SpotifyAuth");
-        setToken(token);
-        const response = await axios.get(
-          "https://api.spotify.com/v1/me/player",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-
-        setCurSongPlaying(response.data.item.name);
-        setArtists(
-          response.data.item.artists.map((artist, index) => artist.name)
-        );
-        setArtist(
-          artists.map((name, index) => {
-            if (index + 1 !== artists.length) {
-              return name + ", ";
-            } else {
-              return name;
-            }
-          })
-        );
-        setImage(response.data.item.album.images[0].url);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    getSong();
-    return () => {
-      setIsPanelActive(false);
-      setCurSongPlaying("");
-      setArtists([]);
-      setArtist("");
-      setImage("");
-    };
+    props.getCurrentState();
   }, []);
 
   return (
@@ -157,23 +52,34 @@ const BottomTab = () => {
       <View
         style={{ width: width - 10, borderRadius: 2, alignItems: "center" }}
       >
-        <ProgressBar
-          h={7}
-          w={7}
-          barWidth={width - 20}
-          onChange={rerender}
-          pannel={false}
-        />
+        <ProgressBar h={7} w={7} barWidth={width - 20} />
       </View>
 
       <TouchableOpacity style={styles.tab} onPress={() => openPanel()}>
         <Image style={styles.image} source={{ uri: image }} />
         <View style={styles.textContainer}>
-          <Text style={styles.song}>{curSongPlaying}</Text>
-          <TT text={artist} style={styles.artist} />
+          <Text style={styles.song}>{currentSong}</Text>
+          <TT
+            text={artists.map((artist, index) => {
+              if (index + 1 == artists.length) {
+                return artist;
+              } else {
+                return artist + ", ";
+              }
+            })}
+            style={styles.artist}
+          />
         </View>
-        <TouchableOpacity onPress={() => pause()}>
-          {isPaused ? (
+        <TouchableOpacity
+          onPress={() => {
+            if (isPlaying) {
+              props.pause();
+            } else {
+              props.play();
+            }
+          }}
+        >
+          {isPlaying ? (
             <Icon name="pause" size={35} color={"white"} />
           ) : (
             <Icon name="play-arrow" size={35} color={"white"} />
@@ -190,17 +96,22 @@ const BottomTab = () => {
               width: width - 100,
             }}
           >
-            <TT text={curSongPlaying} styles={styles.pannelSong} />
+            <TT text={currentSong} styles={styles.pannelSong} />
 
             <View
               style={{
                 width: width - 80,
-
                 alignItems: "center",
               }}
             >
               <Text numberOfLines={1} style={styles.pannelArtist}>
-                {artist}
+                {artists.map((index, artist) => {
+                  if (index + 1 == artists.length) {
+                    return artist;
+                  } else {
+                    return artist + ", ";
+                  }
+                })}
               </Text>
             </View>
           </View>
@@ -213,7 +124,7 @@ const BottomTab = () => {
               h={10}
               w={10}
               barWidth={width - 100}
-              onChange={rerender}
+              onChange={props.getCurrentState()}
             />
           </View>
           <View style={styles.controller}>
@@ -222,10 +133,10 @@ const BottomTab = () => {
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => pause()}>
-              {isPaused ? (
-                <Feather name="pause-circle" color="white" size={65} />
+              {isPlaying ? (
+                <Icon name="pause" size={35} color={"white"} />
               ) : (
-                <Feather name="play-circle" color="white" size={65} />
+                <Icon name="play-arrow" size={35} color={"white"} />
               )}
             </TouchableOpacity>
             <TouchableOpacity onPress={() => next()}>
@@ -297,4 +208,20 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
 });
-export default BottomTab;
+
+const mapStateToProps = (state) => {
+  const { playerState } = state;
+  return {
+    playerState: playerState,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    play: () => dispatch(actions.play()),
+    pause: () => dispatch(actions.pause()),
+    getCurrentState: () => dispatch(actions.getInitialStates()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(BottomTab);
