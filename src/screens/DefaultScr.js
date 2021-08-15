@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, ImageBackground } from "react-native";
+import { View, StyleSheet, ImageBackground } from "react-native";
 import CustButton from "../components/CustButton";
 import Title from "../components/Title";
 import * as AuthSession from "expo-auth-session";
