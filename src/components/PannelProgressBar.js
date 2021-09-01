@@ -3,52 +3,17 @@ import { View, Text, StyleSheet, Dimensions } from "react-native";
 import Slider from "@react-native-community/slider";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import { useFocusEffect } from "@react-navigation/native";
+import * as actions from "../redux/actions/playerActions";
+import { connect } from "react-redux";
 
 const { width, height } = Dimensions.get("window");
 
-const PannelProgressBar = ({ h, w, barWidth, onChange }) => {
+const PannelProgressBar = (props, { barWidth }) => {
   const [token, setToken] = useState();
-  const [isPlaying, setIsPlaying] = useState(false);
   const [totalTime, setTotalTime] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
-  //   useFocusEffect(
-  //     useCallback(() => {
-  //       const getValue = async () => {
-  //         try {
-  //           const token = await AsyncStorage.getItem("SpotifyAuth");
-  //           setToken(token);
 
-  //           const response = await axios.get(
-  //             "https://api.spotify.com/v1/me/player",
-  //             {
-  //               headers: { Authorization: `Bearer ${token}` },
-  //             }
-  //           );
-
-  //           setIsPlaying(response.data.is_playing);
-  //           setTotalTime(response.data.item.duration_ms);
-  //           setCurrentTime(response.data.progress_ms);
-  //         } catch (err) {
-  //           console.log("error in panel progress bar");
-  //           console.log(err);
-  //         }
-  //       };
-
-  //       getValue();
-  //       const interval = setInterval(() => {
-  //         if (isPlaying) {
-  //           setCurrentTime((currentTime) => currentTime + 1000);
-  //         }
-  //       }, 1000);
-  //       return () => {
-  //         setIsPlaying(false);
-  //         setTotalTime(0);
-  //         setCurrentTime(0);
-  //         clearInterval(interval);
-  //       };
-  //     }, [])
-  //   );
+  const { artists, currentSong, image, isPlaying } = props.playerState;
 
   useEffect(() => {
     const getValue = async () => {
@@ -63,7 +28,6 @@ const PannelProgressBar = ({ h, w, barWidth, onChange }) => {
           }
         );
 
-        setIsPlaying(response.data.is_playing);
         setTotalTime(response.data.item.duration_ms);
         setCurrentTime(response.data.progress_ms);
       } catch (err) {
@@ -79,7 +43,6 @@ const PannelProgressBar = ({ h, w, barWidth, onChange }) => {
       }
     }, 1000);
     return () => {
-      setIsPlaying(false);
       setTotalTime(0);
       setCurrentTime(0);
       clearInterval(interval);
@@ -92,7 +55,6 @@ const PannelProgressBar = ({ h, w, barWidth, onChange }) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        setIsPlaying(response.data.is_playing);
         setTotalTime(response.data.item.duration_ms);
         setCurrentTime(response.data.progress_ms);
       })
@@ -100,7 +62,7 @@ const PannelProgressBar = ({ h, w, barWidth, onChange }) => {
         console.log("error in rendering panel progress bar");
         console.log(err);
       });
-    onChange();
+    props.getCurrentState();
 
     return (
       <View style={{ flexDirection: "row", marginTop: 25 }}>
@@ -117,7 +79,6 @@ const PannelProgressBar = ({ h, w, barWidth, onChange }) => {
           value={currentTime}
           thumbTintColor={"#ffffff00"}
         />
-
         <Text style={{ color: "white", marginTop: 11 }}>
           {Math.floor(totalTime / 1000 / 60)}:
           {Math.floor((totalTime / 1000) % 6) < 9
@@ -140,7 +101,7 @@ const PannelProgressBar = ({ h, w, barWidth, onChange }) => {
               : Math.floor((currentTime / 1000) % 60)}
           </Text>
           <Slider
-            style={{ width: barWidth }}
+            style={{ width: width - 100 }}
             minimumValue={0}
             maximumValue={totalTime}
             value={currentTime}
@@ -161,4 +122,20 @@ const PannelProgressBar = ({ h, w, barWidth, onChange }) => {
 
 const styles = StyleSheet.create({});
 
-export default PannelProgressBar;
+const mapStateToProps = (state) => {
+  const { playerState } = state;
+  return {
+    playerState: playerState,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    play: () => dispatch(actions.play()),
+    pause: () => dispatch(actions.pause()),
+    getCurrentState: () => dispatch(actions.getInitialStates()),
+    prev: () => dispatch(actions.prev()),
+    next: () => dispatch(actions.next()),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(PannelProgressBar);

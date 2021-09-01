@@ -20,7 +20,6 @@ const { height, width } = Dimensions.get("window");
 const BottomTab = (props, { navigation }) => {
   //player states
   const { artists, currentSong, image, isPlaying } = props.playerState;
-
   //panel
   const [isPanelActive, setIsPanelActive] = useState(false);
   const [panelProps, setPanelProps] = useState({
@@ -97,7 +96,6 @@ const BottomTab = (props, { navigation }) => {
             }}
           >
             <TT text={currentSong} styles={styles.pannelSong} />
-
             <View
               style={{
                 width: width - 80,
@@ -105,7 +103,7 @@ const BottomTab = (props, { navigation }) => {
               }}
             >
               <Text numberOfLines={1} style={styles.pannelArtist}>
-                {artists.map((index, artist) => {
+                {artists.map((artist, index) => {
                   if (index + 1 == artists.length) {
                     return artist;
                   } else {
@@ -128,18 +126,26 @@ const BottomTab = (props, { navigation }) => {
             />
           </View>
           <View style={styles.controller}>
-            <TouchableOpacity onPress={() => prev()}>
+            <TouchableOpacity onPress={() => props.prev()}>
               <Icon name="skip-previous" color="white" size={65} />
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => pause()}>
+            <TouchableOpacity
+              onPress={() => {
+                if (isPlaying) {
+                  props.pause();
+                } else {
+                  props.play();
+                }
+              }}
+            >
               {isPlaying ? (
-                <Icon name="pause" size={35} color={"white"} />
+                <Icon name="pause" size={65} color={"white"} />
               ) : (
-                <Icon name="play-arrow" size={35} color={"white"} />
+                <Icon name="play-arrow" size={65} color={"white"} />
               )}
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => next()}>
+            <TouchableOpacity onPress={() => props.next()}>
               <Icon name="skip-next" color="white" size={65} />
             </TouchableOpacity>
           </View>
@@ -221,6 +227,8 @@ const mapDispatchToProps = (dispatch) => {
     play: () => dispatch(actions.play()),
     pause: () => dispatch(actions.pause()),
     getCurrentState: () => dispatch(actions.getInitialStates()),
+    prev: () => dispatch(actions.prev()),
+    next: () => dispatch(actions.next()),
   };
 };
 
